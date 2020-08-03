@@ -7,4 +7,4 @@ seq2seq networks have two parts:
 An encoder that accepts language (or audio or video) input. The output matrix of the encoder is discarded, but its state is preserved as a vector.
 
 A decoder that takes the encoder’s final state (or memory) as its initial state. We use a technique called “teacher forcing” to train the decoder to predict the following text (characters or words) in a target sequence given the previous text.
-
+now in preprocessing.py , i have used input_docs,target_docs 
