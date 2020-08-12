@@ -44,9 +44,9 @@ encoder_inputs = Input(shape=(None, num_encoder_tokens))
 For the LSTM layer,  to select the dimensionality (the size of the LSTM’s hidden states, which helps determine how closely the model molds itself to the training data — something we can play around with) and whether to return the state (in this case we do):
 
 encoder_lstm = LSTM(100, return_state=True)
-# we're using a dimensionality of 100
+#  dimensionality of 256
 # so any LSTM output matrix will have 
-# shape [batch_size, 100]
+# shape [batch_size, 256]
  the only thing that require  from the encoder is its final states. We can get these by linking  LSTM layer with  input layer:
 
 encoder_outputs, state_hidden, state_cell = encoder_lstm(encoder_inputs)
