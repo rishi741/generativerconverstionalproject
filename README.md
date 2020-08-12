@@ -25,4 +25,31 @@ the encoder input data
 the decoder input data
 the decoder target data
 
-The reason i have used two decoder data is  to do with a technique known as teacher forcing that most seq2seq models employ during training. Here’s the idea: i have a  input token from the previous timestep to help train the model for the current timestep’s target token.
+The reason i have used two decoder data is  to do with a technique known as teacher forcing that most seq2seq models employ during training. Here’s the idea: i have a  input token from the previous timestep to help train the model for the current timestep’s target token
+now for training_model.py
+Deep learning models in Keras are built in layers, where each layer is a step in the model.
+
+the encoder requires two layer types from Keras:
+
+An input layer, which defines a matrix to hold all the one-hot vectors that is feeded to the model.
+An LSTM layer, with some output dimensionality.
+We can import these layers as well as the model we need like so:
+
+from keras.layers import Input, LSTM
+from keras.models import Model
+Next, i set up the input layer, which requires some number of dimensions that we’re providing. In this casee the code is written to handle varying batch sizes, so  don’t need to specify that dimension.
+
+# the shape specifies the input matrix sizes
+encoder_inputs = Input(shape=(None, num_encoder_tokens))
+For the LSTM layer,  to select the dimensionality (the size of the LSTM’s hidden states, which helps determine how closely the model molds itself to the training data — something we can play around with) and whether to return the state (in this case we do):
+
+encoder_lstm = LSTM(100, return_state=True)
+# we're using a dimensionality of 100
+# so any LSTM output matrix will have 
+# shape [batch_size, 100]
+ the only thing that require  from the encoder is its final states. We can get these by linking  LSTM layer with  input layer:
+
+encoder_outputs, state_hidden, state_cell = encoder_lstm(encoder_inputs)
+encoder_outputs isn’t really important for us, so we can just discard it. However, the states, we’ll save in a list:
+
+encoder_states = [state_hidden, state_cell]
