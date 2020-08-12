@@ -37,7 +37,7 @@ We can import these layers as well as the model we need like so:
 
 from keras.layers import Input, LSTM
 from keras.models import Model
-Next, i set up the input layer, which requires some number of dimensions that we’re providing. In this casee the code is written to handle varying batch sizes, so  don’t need to specify that dimension.
+Next, i set up the input layer, which requires some number of dimensions that i have used In this casee the code is written to handle varying batch sizes, so  don’t need to specify that dimension.
 
 # the shape specifies the input matrix sizes
 encoder_inputs = Input(shape=(None, num_encoder_tokens))
@@ -53,3 +53,23 @@ encoder_outputs, state_hidden, state_cell = encoder_lstm(encoder_inputs)
 encoder_outputs isn’t really important for us, so we can just discard it. However, the states, we’ll save in a list:
 
 encoder_states = [state_hidden, state_cell]
+
+Decoder Training Setup
+The decoder looks a lot like the encoder (phew!), with an input layer and an LSTM layer that we use together:
+
+decoder_inputs = Input(shape=(None, num_decoder_tokens))
+decoder_lstm = LSTM(256, return_sequences=True, return_state=True)
+# This time we care about full return sequences
+However, with our decoder, i passed in the state data from the encoder, along with the decoder inputs. This time, the output is benefical  instead of the states:
+
+# The two states will be discarded for now
+decoder_outputs, decoder_state_hidden, decoder_state_cell = 
+    decoder_lstm(decoder_inputs, initial_state=encoder_states)
+We also need to run the output through a final activation layer, using the Softmax function, that will give us the probability distribution — where all probabilities sum to one — for each token. The final layer also transforms our LSTM output from a dimensionality of whatever we gave it (in our case, 10) to the number of unique words within the hidden layer’s vocabulary (i.e., the number of unique target tokens, which is definitely more than 10!).
+
+decoder_dense = Dense(num_decoder_tokens, activation='softmax')
+
+decoder_outputs = decoder_dense(decoder_outputs)
+Keras’s implementation could work with several layer types, but Dense is the least complex, so we’ll go with that. We also need to modify our import statement to include it before running the code:
+
+from keras.layers import Input, LSTM, Dense
