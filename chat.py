@@ -6,7 +6,7 @@ class chatbot:
     negative_responses = ("no", "nope", "nah", "naw", "not a chance", "sorry")
     exit_commands = ("quit", "pause", "exit", "goodbye", "bye", "later", "stop")
     def __init__(self):
-        self.intent_chatbot = {'describe_system_intent': r'.*\s*your system.*','area_intent': r'.*area.square.*(\d+)'}
+        self.intent_chatbot = {'describe_system_intent': r'.*\s*your system.*'}
     def start_chat(self):
         user_response = input("Hi,what's your name\n")
         if user_response in self.negative_responses:
@@ -15,22 +15,20 @@ class chatbot:
         reply = input("hey,{} i am rdany(r means robot) chatbot,tell about yourself\n".format(user_response))
         self.match(reply)
     def make_exit(self,reply):
-        if exit in self.exit_commands:
+        for exit in self.exit_commands:
             if exit in reply:
                 return True
-            return False
+        return False
     def match(self,reply):
-        for key,value in self.intent_chatbot:
+        for key,value in self.intent_chatbot.items():
             intent = key
             regrex_pattern = value
             found_match = re.match(regrex_pattern,reply)
             if found_match and intent == 'describe_system_intent':
                 return self.describe_system_intent()
-            elif found_match and intent == "area_intent":
-                return self.area_intent(found_match.groups()[0])
-        self.chat(reply)
+        return self.chat(reply)
     def string_to_matrix(self,reply):
-        tokens = re.findall(r"[\w']+|[^\s\w]", user_input)
+        tokens = re.findall(r"[\w']+|[^\s\w]",reply)
         user_input_matrix = np.zeros(
             (1, max_encoder_seq_length, num_encoder_tokens),
             dtype='float32')
@@ -78,7 +76,7 @@ class chatbot:
             states_value = [hidden_state, cell_state]
             # remove <START> and <END> tokens
             # from decoded_sentence
-            decoded_sentence = decoded_sentence.replace("<START>","").replace("<END>")
+            decoded_sentence = decoded_sentence.replace("<START>","").replace("<END>","")
         return decoded_sentence
     def chat(self,reply):
         if self.make_exit(reply):
@@ -89,11 +87,7 @@ class chatbot:
 
     def describe_system_intent(self):
         reply = input("I am based rule-generative based  chatbot model...isn't that cool !\n")
-        self.match(reply)
-    def area_intent(self,number):
-        area = number**2
-        reply = input("area of square is {}\n".format(area))
-        self.match(reply)
+        return self.match(reply)
 robot = chatbot()
 robot.start_chat()
 

@@ -33,7 +33,6 @@ for line in pairs[:-1]:
     # And here:
     if token not in target_tokens:
       target_tokens.add(token)
-
 input_tokens = sorted(list(input_tokens))
 target_tokens = sorted(list(target_tokens))
 

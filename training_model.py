@@ -12,7 +12,7 @@ dimensionality = 256
 
 # Choose the batch size
 # and number of epochs:
-batch_size = 10
+batch_size = 20
 epochs = 600
 
 # Encoder training setup
