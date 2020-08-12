@@ -84,3 +84,4 @@ The decoder generates an output matrix of possible words and their probabilities
 I used NumPy to help us choose the most probable word (according to the model)
 the chosen word gets translated back from a NumPy matrix into human language and added to the output sentence
 now in chat.py , i have used some rule based model also, i have used regrex to check the intent of user_response if the intent of user_response match with the regrex pattern it will follow the rule based patern , else it will genearte random responses using deep learning training.
+now in the chatbot_responses.docs there is screenshot of converstation of chatbot and user.
