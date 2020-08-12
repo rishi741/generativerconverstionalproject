@@ -73,3 +73,14 @@ decoder_outputs = decoder_dense(decoder_outputs)
 Keras’s implementation could work with several layer types, but Dense is the least complex, so we’ll go with that. We also need to modify our import statement to include it before running the code:
 
 from keras.layers import Input, LSTM, Dense
+
+now for chat.py
+chatbot i have taken   decode_sequence() from test_mode.py and rename  to .generate_response(). As a reminder, this is where response generation and selection take place:
+
+The encoder model encodes the user input
+The encoder model generates an embedding (the last hidden state values)
+The embedding is passed from the encoder to the decoder
+The decoder generates an output matrix of possible words and their probabilities
+I used NumPy to help us choose the most probable word (according to the model)
+the chosen word gets translated back from a NumPy matrix into human language and added to the output sentence
+now in chat.py , i have used some rule based model also, i have used regrex to check the intent of user_response if the intent of user_response match with the regrex pattern it will follow the rule based patern , else it will genearte random responses using deep learning training.
